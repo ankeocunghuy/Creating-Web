@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Page meta + shared stylesheet -->
+  <meta charset="utf-8">
+  <title>Payment — Huy's Bluetooth Speakers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="styles/style.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Simple header -->
+  <header><h1>Payment</h1></header>
+
+  <main id="main" class="payment">
+    <!-- Order summary: values are filled by scripts/part2.js from sessionStorage -->
+    <section class="summary card">
+      <h2>Your Order</h2>
+      <p><strong>Name:</strong> <span id="sumName"></span></p>
+      <p><strong>Email:</strong> <span id="sumEmail"></span></p>
+      <p><strong>Address:</strong> <span id="sumAddress"></span></p>
+      <p><strong>Product:</strong> <span id="sumProduct"></span> × <span id="sumQty"></span></p>
+      <p><strong>Unit:</strong> $<span id="sumUnit"></span></p>
+      <!-- Extra add-ons list, e.g. “Carry case: $10.00” (rendered in part2.js) -->
+      <p><strong>Extra:</strong> <span id="sumExtras"></span></p>
+      <p><strong>Total:</strong> $<span id="sumTotal"></span></p>
+    </section>
+
+    <!-- Final payment form that POSTs to Swin echo server -->
+    <form id="paymentForm" class="card"
+          action="https://mercury.swin.edu.au/it000000/formtest.php"
+          method="post" novalidate>
+      <fieldset>
+        <legend>Credit Card</legend>
+
+        <!-- Card brand influences auto-formatting in enhancements.js -->
+        <label for="card_type">Card type</label>
+        <select id="card_type" name="card_type">
+          <option value="">Select a card…</option>
+          <option value="visa">Visa</option>
+          <option value="mastercard">MasterCard</option>
+          <option value="amex">American Express</option>
+        </select>
+
+        <!-- Name on card: letters/spaces only (validated in part2.js) -->
+        <p><label for="card_name">Name on card</label>
+        <input id="card_name" name="card_name" type="text" placeholder="Ngoc Huy Nguyen"></p>
+
+        <!-- Card number: auto-groups while typing; validated in part2.js -->
+        <p><label for="card_number">Card number</label>
+        <input id="card_number" name="card_number" type="text"
+               inputmode="numeric" autocomplete="cc-number" maxlength="19"
+               placeholder="16 or 15 digits"></p>
+
+        <!-- Expiry: auto-inserts “-” (MM-YY) in enhancements.js -->
+        <p><label for="card_expiry">Expiry (MM-YY)</label>
+        <input id="card_expiry" name="card_expiry" type="text"
+               inputmode="numeric" autocomplete="cc-exp" maxlength="5"
+               placeholder="08-27"></p>
+
+        <!-- CVV: 3 digits validation in part2.js -->
+        <p><label for="card_cvv">CVV (3 digits)</label>
+        <input id="card_cvv" name="card_cvv" type="text" inputmode="numeric" placeholder="123"></p>
+      </fieldset>
+
+      <!-- Where JS writes validation errors and moves focus -->
+      <div id="payErrors" class="form-errors" aria-live="polite"></div>
+
+      <div class="actions">
+        <button type="submit" id="checkoutBtn">Check Out</button>
+        <button type="button" id="cancelBtn">Cancel Order</button>
+      </div>
+    </form>
+  </main>
+
+  <footer><p>© Ngoc Huy Nguyen</p></footer>
+
+  <!-- Main logic then progressive enhancements -->
+  <script src="scripts/part2.js" defer></script>
+  <script src="scripts/enhancements.js" defer></script>
+</body>
+</html>

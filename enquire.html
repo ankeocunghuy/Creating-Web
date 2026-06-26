@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Enquiry page: JS-only validation (novalidate on form) -->
+  <meta charset="utf-8">
+  <title>Enquire — Huy's Bluetooth Speakers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Enquire about Bluetooth speakers (JavaScript-validated form).">
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+  <header><h1>Product Enquiry</h1></header>
+
+  <!-- Primary nav (centered with flex in style.css) -->
+  <nav aria-label="Primary">
+    <ul class="menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="product.html">Products</a></li>
+      <li><a class="active" aria-current="page" href="enquire.html">Enquire</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="enhancements2.html">Enhancements</a></li>
+      <li><a href="mailto:105950854@student.swin.edu.au">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main class="enquire">
+    <!-- A2: novalidate — HTML attributes removed; JS checks everything -->
+    <form id="enquireForm" action="payment.html" method="post" novalidate>
+      <fieldset>
+        <legend>Your details</legend>
+        <label for="first-name">First name</label>
+        <input id="first-name" name="first_name" type="text" placeholder="First name">
+
+        <label for="last-name">Last name</label>
+        <input id="last-name" name="last_name" type="text" placeholder="Last name">
+
+        <label for="email">Email</label>
+        <input id="email" name="email" type="text" inputmode="email" autocomplete="email" placeholder="name@example.com">
+
+        <label for="phone">Phone</label>
+        <input id="phone" name="phone" type="text" inputmode="numeric" placeholder="10 digits">
+      </fieldset>
+
+      <fieldset>
+        <legend>Address</legend>
+        <label for="street">Street address</label>
+        <input id="street" name="street" type="text" placeholder="e.g. 12 Example St">
+
+        <label for="suburb">Suburb/Town</label>
+        <input id="suburb" name="suburb" type="text" placeholder="e.g. Hawthorn">
+
+        <label for="state">State</label>
+        <select id="state" name="state">
+          <option value="" selected>Select…</option>
+          <option>VIC</option><option>NSW</option><option>QLD</option><option>NT</option>
+          <option>WA</option><option>SA</option><option>TAS</option><option>ACT</option>
+        </select>
+
+        <label for="postcode">Postcode</label>
+        <input id="postcode" name="postcode" type="text" inputmode="numeric" placeholder="4 digits">
+      </fieldset>
+
+      <fieldset>
+        <legend>Your preferences</legend>
+
+        <!-- Contact radios -->
+        <span class="legend-sub">Preferred contact</span>
+        <div class="group">
+          <input id="contact-email" type="radio" name="preferred_contact" value="email">
+          <label for="contact-email">Email</label>
+
+          <input id="contact-post" type="radio" name="preferred_contact" value="post">
+          <label for="contact-post">Post</label>
+
+          <input id="contact-phone" type="radio" name="preferred_contact" value="phone">
+          <label for="contact-phone">Phone</label>
+        </div>
+
+        <!-- Product + quantity + paid extras (prices in data-price) -->
+        <label for="product">Product</label>
+        <select id="product" name="product">
+          <option value="" selected>Select a speaker…</option>
+          <option value="BT-S1 Mini" data-price="59">BT-S1 Mini — $59</option>
+          <option value="BT-X7 PartyPro" data-price="149">BT-X7 PartyPro — $149</option>
+          <option value="BT-R5 StudioPlus" data-price="129">BT-R5 StudioPlus — $129</option>
+        </select>
+
+        <label for="qty">Quantity</label>
+        <input id="qty" name="quantity" type="text" inputmode="numeric" placeholder="1">
+
+        <label><input type="checkbox" name="features[]" value="Extended warranty" data-price="15"> Extended warranty (+$15)</label>
+        <label><input type="checkbox" name="features[]" value="Carry case" data-price="10"> Carry case (+$10)</label>
+
+        <!-- Live price preview written by part2.js -->
+        <p><strong>Unit price:</strong> $<span id="unitPrice">0.00</span> ·
+           <strong>Total:</strong> $<span id="pricePreview">0.00</span></p>
+
+        <!-- Error container used by both part2.js and enhancements.js -->
+        <div id="enqErrors" class="form-errors" aria-live="polite"></div>
+
+        <label for="comments">Comments</label>
+        <textarea id="comments" name="comments" rows="5" placeholder="Tell us anything specific you're after…"></textarea>
+      </fieldset>
+
+      <div class="actions">
+        <button type="submit" id="payNow">Pay Now</button>
+      </div>
+    </form>
+  </main>
+
+  <footer>
+    <p>© 2025 Ngoc Huy Nguyen · <a href="mailto:105950854@student.swin.edu.au">Email</a></p>
+  </footer>
+
+  <!-- JS: main logic first, then enhancements -->
+  <script src="scripts/part2.js" defer></script>
+  <script src="scripts/enhancements.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Assignment 2 Enhancements for Huy's Bluetooth Speakers website." />
+  <link rel="stylesheet" href="styles/style.css" />
+  <title>Enhancements (Assignment 2) — Huy's Bluetooth Speakers</title>
+</head>
+<body>
+  <header><h1>Enhancements — Assignment 2</h1></header>
+
+  <nav aria-label="Primary">
+    <ul class="menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="product.html">Products</a></li>
+      <li><a href="enquire.html">Enquire</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a class="active" href="enhancements2.html" aria-current="page">Enhancements</a></li>
+      <li><a href="mailto:105950854@student.swin.edu.au">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main class="enh-page">
+    <div class="enh-note card">
+      These are the two enhancements I implemented for <strong>Assignment 2</strong>.  
+      Each item shows <em>where</em> it’s used, <em>what &amp; why</em>, a brief <em>how</em> (with code),
+      and a page where the marker can try it live.
+    </div>
+
+    <!-- E1 -->
+    <section class="enh-card card">
+      <h2>1) Payment Input Auto-Formatting (Card Number &amp; Expiry)</h2>
+      <p class="enh-meta"><strong>Where:</strong> <code>payment.html</code> ·
+        <strong>File:</strong> <code>scripts/enhancements.js</code> (function <code>enhancePayment()</code>)</p>
+
+      <p><strong>What &amp; Why:</strong> While the user types, the card number is grouped for readability
+        (Visa/MasterCard <code>4-4-4-4</code>, AmEx <code>4-6-5</code>) and the expiry auto-inserts the dash (<code>MM-YY</code>).
+        This lowers input mistakes and speeds up data entry. It’s a progressive enhancement:
+        the core validation still runs in JavaScript and strips spaces before submit.</p>
+
+      <pre class="enh-code"><code>// In enhancements.js
+const typeEl = $('#card_type'), numEl = $('#card_number'), expEl = $('#card_expiry');
+
+// Group digits: AmEx 4-6-5, otherwise 4-4-4-4
+function formatNumber(){
+  const t = typeEl?.value || "";
+  const d = (numEl.value || "").replace(/\D/g, "").slice(0, t === "amex" ? 15 : 16);
+  numEl.value = (t === "amex")
+    ? d.replace(/(^\d{0,4})(\d{0,6})(\d{0,5}).*/, (_,a,b,c) =&gt; [a,b,c].filter(Boolean).join(" "))
+    : d.replace(/(\d{4})(?=\d)/g, "$1 ").trim();
+}
+
+// Insert dash → "MM-YY"
+function formatExpiry(){
+  const d = (expEl.value || "").replace(/\D/g, "").slice(0,4);
+  expEl.value = d.length &gt;= 3 ? d.slice(0,2) + "-" + d.slice(2) : d;
+}</code></pre>
+
+      <p><strong>Evidence:</strong> Open <a href="payment.html">Payment</a> and type a Visa/MasterCard/AmEx
+        number and an expiry date — spacing and the dash appear automatically.</p>
+    </section>
+
+    <!-- E2 -->
+    <section class="enh-card card">
+      <h2>2) Accessible Error Focus &amp; Scroll</h2>
+      <p class="enh-meta"><strong>Where:</strong> <code>enquire.html</code> &amp; <code>payment.html</code> ·
+        <strong>Files:</strong> <code>scripts/part2.js</code>, <code>scripts/enhancements.js</code></p>
+
+      <p><strong>What &amp; Why:</strong> When validation fails, the page scrolls to the error box and keyboard focus
+        moves to the <em>first invalid field</em>. The invalid controls are flagged with
+        <code>aria-invalid="true"</code> and the first one is recorded in <code>data-first-invalid</code>.
+        This makes fixing errors faster and improves screen-reader usability.</p>
+
+      <pre class="enh-code"><code>// part2.js — flag first invalid and remember it for the enhancer
+let firstInvalidSel = null;
+function flag(sel){ const el = document.querySelector(sel);
+  if (el){ el.setAttribute("aria-invalid","true"); if (!firstInvalidSel) firstInvalidSel = sel; }
+}
+errors.dataset.firstInvalid = firstInvalidSel || "";
+
+// enhancements.js — scroll and focus when the error box updates
+const sel = box.dataset.firstInvalid;
+if (sel &amp;&amp; form.querySelector(sel)?.focus) form.querySelector(sel).focus();
+else form.querySelector("[aria-invalid='true']")?.focus();</code></pre>
+
+      <p><strong>Evidence:</strong> On <a href="enquire.html">Enquire</a>, leave “Suburb” empty and click
+        <em>Pay Now</em> — the page scrolls and focus lands on the Suburb field (the first failing control).
+        Repeat on <a href="payment.html">Payment</a> with an invalid card number.</p>
+    </section>
+  </main>
+
+  <footer><p>&copy; 2025 Ngoc Huy Nguyen · <a href="mailto:105950854@student.swin.edu.au">Email</a></p></footer>
+
+  <!-- Scripts are already included on the relevant pages; no scripts needed here -->
+</body>
+</html>
